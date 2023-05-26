@@ -1,3 +1,7 @@
+import Header from "@/components/Header";
+
 export default function Home() {
-  return <div>Hello world</div>;
+  return <>
+  <Header label="Home" showBackArrow={false}/>
+  </>
 }
