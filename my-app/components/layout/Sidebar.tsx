@@ -36,9 +36,9 @@ const Sidebar = () => {
       <div className="flex flex-col items-end">
         <div className="space-y-2 lg:w-[230px]">
           <SidebarLogo />
-          {items.map((item) => (
+          {items.map((item, index) => (
             <SidebarItem
-              key={item.href}
+              key={index}
               // alert={item.alert}
               // auth={item.auth}
               href={item.href}
