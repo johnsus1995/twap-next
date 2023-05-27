@@ -1,52 +1,66 @@
-import useLogin from "@/hooks/useLogin";
 import { useCallback, useState } from "react";
 import TextInput from "../TextInput";
 import Modal from "../Modal";
 import useRegister from "@/hooks/useRegister";
+import useLogin from "@/hooks/useLogin";
 
-const LoginModal = () => {
-  const loginModal = useLogin();
+const RegisterModal = () => {
   const registerModal = useRegister();
+  const loginModal = useLogin()
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
 
   const onToggle = useCallback(() => {
     if (isLoading) {
       return;
     }
-
-    registerModal.onOpen();
-    loginModal.onClose();
+  
+    registerModal.onClose();
+    loginModal.onOpen();
   }, [loginModal, registerModal, isLoading]);
 
   const onSubmit = useCallback(async () => {
     try {
       setIsLoading(true);
       //todo
-      loginModal.onClose();
+      registerModal.onClose();
     } catch (error) {
       console.log("Something went wrong");
     } finally {
       setIsLoading(false);
     }
-  }, [loginModal]);
+  }, [registerModal]);
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
       <TextInput
-        placeholder="Email"
-        onChange={(e) => setEmail(e.target.value)}
-        value={email}
         disabled={isLoading}
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
       <TextInput
+        disabled={isLoading}
+        placeholder="Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <TextInput
+        disabled={isLoading}
+        placeholder="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
+      <TextInput
+        disabled={isLoading}
         placeholder="Password"
         type="password"
-        onChange={(e) => setPassword(e.target.value)}
         value={password}
-        disabled={isLoading}
+        onChange={(e) => setPassword(e.target.value)}
       />
     </div>
   );
@@ -54,9 +68,9 @@ const LoginModal = () => {
   const footerContent = (
     <div className="text-neutral-400 text-center mt-4">
       <p>
-        First time using Twitter?
+        Already have an account?
         <span
-          onClick={onToggle}
+            onClick={onToggle}
           className="
             text-white 
             cursor-pointer 
@@ -64,7 +78,7 @@ const LoginModal = () => {
           "
         >
           {" "}
-          Create an account
+          Sign in
         </span>
       </p>
     </div>
@@ -73,10 +87,10 @@ const LoginModal = () => {
   return (
     <Modal
       disabled={isLoading}
-      isOpen={loginModal.isOpen}
-      title="Login"
+      isOpen={registerModal.isOpen}
+      title="Register"
       actionLabel="Sign in"
-      onClose={loginModal.onClose}
+      onClose={registerModal.onClose}
       onSubmit={onSubmit}
       body={bodyContent}
       footer={footerContent}
@@ -84,4 +98,4 @@ const LoginModal = () => {
   );
 };
 
-export default LoginModal;
+export default RegisterModal;
