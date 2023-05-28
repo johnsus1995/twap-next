@@ -3,10 +3,13 @@ import TextInput from "../TextInput";
 import Modal from "../Modal";
 import useRegister from "@/hooks/useRegister";
 import useLogin from "@/hooks/useLogin";
+import axios from "axios";
+import { toast } from "react-hot-toast";
+import { signIn } from "next-auth/react";
 
 const RegisterModal = () => {
   const registerModal = useRegister();
-  const loginModal = useLogin()
+  const loginModal = useLogin();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,7 +21,7 @@ const RegisterModal = () => {
     if (isLoading) {
       return;
     }
-  
+
     registerModal.onClose();
     loginModal.onOpen();
   }, [loginModal, registerModal, isLoading]);
@@ -27,13 +30,24 @@ const RegisterModal = () => {
     try {
       setIsLoading(true);
       //todo
+      await axios.post("/api/register", {
+        email,
+        username,
+        name,
+        password,
+      });
+
+      toast.success("Account created.");
+
+      signIn("credentials", { email, password });
+
       registerModal.onClose();
     } catch (error) {
-      console.log("Something went wrong");
+      toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
     }
-  }, [registerModal]);
+  }, [registerModal, email, username, name, password]);
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
@@ -70,7 +84,7 @@ const RegisterModal = () => {
       <p>
         Already have an account?
         <span
-            onClick={onToggle}
+          onClick={onToggle}
           className="
             text-white 
             cursor-pointer 
