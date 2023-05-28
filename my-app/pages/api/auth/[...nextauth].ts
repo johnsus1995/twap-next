@@ -15,6 +15,7 @@ export const authOptions: AuthOptions = {
         email: { label: 'email', type: 'text' },
         password: { label: 'password', type: 'password' }
       },
+      
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
           throw new Error('Invalid credentials');
@@ -51,6 +52,12 @@ export const authOptions: AuthOptions = {
     secret: process.env.NEXTAUTH_JWT_SECRET,
   },
   secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    async redirect(params) {
+      const { url, baseUrl } = params;
+      return url.startsWith(baseUrl) ? url : "http://localhost:8080";
+    },
+  },
 };
 
 export default NextAuth(authOptions);

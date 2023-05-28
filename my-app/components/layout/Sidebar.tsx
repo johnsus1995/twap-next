@@ -4,12 +4,12 @@ import { FaUser } from "react-icons/fa";
 import SidebarLogo from "./SidebarLogo";
 import SidebarItem from "./SidebarItem";
 import SidebarTweetButton from "./SidebarTweetButton";
-
-// interface SidebarProps {
-//     children: any
-// }
+import useCurrentUser from "@/hooks/useCurrentUser";
 
 const Sidebar = () => {
+  const { data: currentUser } = useCurrentUser();
+  // debugger
+
   const items = [
     {
       icon: BsHouseFill,
@@ -21,12 +21,12 @@ const Sidebar = () => {
       label: "Notifications",
       href: "/notifications",
       auth: true,
-      //   alert: currentUser?.hasNotification
+        alert: currentUser?.hasNotification
     },
     {
       icon: FaUser,
       label: "Profile",
-      //   href: `/users/${currentUser?.id}`,
+        href: `/users/${currentUser?.id}`,
       auth: true,
     },
   ];
@@ -46,11 +46,13 @@ const Sidebar = () => {
               label={item.label}
             />
           ))}
-          <SidebarItem
-            // onClick={() => signOut()}
-            icon={BiLogOut}
-            label="Logout"
-          />
+          {currentUser && (
+            <SidebarItem
+              // onClick={() => signOut()}
+              icon={BiLogOut}
+              label="Logout"
+            />
+          )}
           <SidebarTweetButton />
         </div>
       </div>

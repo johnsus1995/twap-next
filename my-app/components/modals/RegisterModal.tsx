@@ -39,7 +39,7 @@ const RegisterModal = () => {
 
       toast.success("Account created.");
 
-      signIn("credentials", { email, password });
+      signIn("credentials", { email, password,callbackUrl:"http://localhost:8080/" });
 
       registerModal.onClose();
     } catch (error) {
@@ -56,6 +56,7 @@ const RegisterModal = () => {
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        type="email"
       />
       <TextInput
         disabled={isLoading}
